@@ -1,0 +1,19 @@
+{
+    "require": {
+        "patrickbussmann/oauth2-apple": "^0.2"
+    },
+    "replace": {
+        "league/oauth2-client": "*",
+        "paragonie/random_compat": "*",
+        "psr/http-message": "*",
+        "guzzlehttp/psr7": "*",
+        "guzzlehttp/promises": "*",
+        "guzzlehttp/guzzle": "*"
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Grav\\Plugin\\Login\\OAuth2\\": "classes/"
+        }
+    }
+}

@@ -1,0 +1,8 @@
+enabled: true
+built_in_css: true
+client_id: ''
+team_id: ''
+keyFileId: ''
+keyFilePath: ''
+options:
+  scope: ['name', 'email']
