@@ -7,10 +7,19 @@ namespace Composer\Autoload;
 class ComposerStaticInite4acdb67ae7c99e59555b6034d189098
 {
     public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'StellaMaris\\Clock\\' => 18,
+        ),
+        'P' => 
+        array (
+            'Psr\\Clock\\' => 10,
+        ),
         'L' => 
         array (
             'League\\OAuth2\\Client\\' => 21,
             'Lcobucci\\JWT\\' => 13,
+            'Lcobucci\\Clock\\' => 15,
         ),
         'G' => 
         array (
@@ -23,6 +32,14 @@ class ComposerStaticInite4acdb67ae7c99e59555b6034d189098
     );
 
     public static $prefixDirsPsr4 = array (
+        'StellaMaris\\Clock\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stella-maris/clock/src',
+        ),
+        'Psr\\Clock\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/clock/src',
+        ),
         'League\\OAuth2\\Client\\' => 
         array (
             0 => __DIR__ . '/..' . '/patrickbussmann/oauth2-apple/src',
@@ -31,14 +48,22 @@ class ComposerStaticInite4acdb67ae7c99e59555b6034d189098
         array (
             0 => __DIR__ . '/..' . '/lcobucci/jwt/src',
         ),
+        'Lcobucci\\Clock\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/lcobucci/clock/src',
+        ),
         'Grav\\Plugin\\Login\\OAuth2\\' => 
         array (
             0 => __DIR__ . '/../..' . '/classes',
         ),
         'Firebase\\JWT\\' => 
         array (
-            0 => __DIR__ . '/..' . '/fproject/php-jwt/src',
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
+    );
+
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -46,6 +71,7 @@ class ComposerStaticInite4acdb67ae7c99e59555b6034d189098
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInite4acdb67ae7c99e59555b6034d189098::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInite4acdb67ae7c99e59555b6034d189098::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInite4acdb67ae7c99e59555b6034d189098::$classMap;
 
         }, null, ClassLoader::class);
     }
