@@ -114,7 +114,7 @@ class LoginOAuth2ApplePlugin extends Plugin
                 $session = $this->grav['session'];
                 $session->oauth2_provider = $provider_name;
                 $session->oauth2_state = $state;
-                $session->oauth2_redirect = $temp_redirect;
+                $session->redirect_after_login = $temp_redirect;
             }
         }
     }

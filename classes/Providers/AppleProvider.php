@@ -37,7 +37,7 @@ class AppleProvider extends BaseProvider
         $options['scope'] = $this->config->get('plugins.login-oauth2-apple.options.scope');
 
         // workaround for Apple's crappy OAuth2 implementation that uses a POST callback that doesn't forward lax-cookie
-        $this->setTempCookie($options);
+        $this->setTempCookie();
 
         return $this->provider->getAuthorizationUrl($options);
     }
@@ -74,12 +74,14 @@ class AppleProvider extends BaseProvider
         return $callback_uri;
     }
 
-    public function setTempCookie(Array $options): void
+    public function setTempCookie(): void
     {
+        $session = Grav::instance()['session'];
+
         // Create short-lived cookie to get around Apple's crappy OAuth2 implementation
         $temp_data = [
-            'state' => $options['state'],
-            'redirect_after_login' => '/en/bookmarks', //testing only
+            'state' => $session->oauth2_state,
+            'redirect_after_login' => $session->redirect_after_login, //testing only
         ];
 
         setcookie($this->temp_cookie_name, json_encode($temp_data), [
