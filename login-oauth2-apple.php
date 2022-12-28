@@ -2,6 +2,9 @@
 namespace Grav\Plugin;
 
 use Grav\Common\Plugin;
+use Grav\Common\Utils;
+use Grav\Plugin\Login\OAuth2\ProviderFactory;
+use Grav\Plugin\Login\OAuth2\Providers\AppleProvider;
 use RocketTheme\Toolbox\Event\Event;
 
 /**
@@ -39,10 +42,16 @@ class LoginOAuth2ApplePlugin extends Plugin
     public function onPluginsInitialized()
     {
         if (isset($this->grav['oauth2'])) {
-            $this->grav['oauth2']->addProvider('apple');
+            $options = $this->config->get('plugins.login-oauth2-apple');
+            $this->grav['oauth2']->addProvider('apple', $options);
         } else {
             $this->grav['messages']->add('oauth2-apple plugin requires oauth2 plugin but it appears to not be installed or enabled', 'error');
         }
+
+        $this->enable([
+            'onTask.callback.oauth2'    => ['loginCallback', 100],
+            ]
+        );
 
     }
 
@@ -78,6 +87,35 @@ class LoginOAuth2ApplePlugin extends Plugin
         // add CSS for frontend if required
         if (!$this->isAdmin() && $this->config->get('plugins.login-oauth2-apple.built_in_css')) {
             $this->grav['assets']->add('plugin://login-oauth2-apple/css/login-oauth2-apple.css');
+        }
+    }
+
+    /**
+     * Worksaround to handle callback being called outside user's session
+     *
+     * @param Event $e
+     * @return void
+     */
+    public function loginCallback(Event $e)
+    {
+        $state = $_POST['state'] ?? null;
+        $code = $_POST['code'] ?? null;
+        if ($code && $state && Utils::startsWith($state, 'APPLE__')) {
+            $oauth2 = $this->grav['oauth2'];
+            $provider_name = 'apple';
+
+            /** @var AppleProvider $provider */
+            $provider = ProviderFactory::create($provider_name, $oauth2->getProviderOptions($provider_name));
+            $temp_data = $provider->getTempCookieData();
+            $temp_state = $temp_data['state'] ?? null;
+            $temp_redirect = $temp_data['redirect_after_login'] ?? null;
+
+            if ($temp_state === $state) {
+                $session = $this->grav['session'];
+                $session->oauth2_provider = $provider_name;
+                $session->oauth2_state = $state;
+                $session->oauth2_redirect = $temp_redirect;
+            }
         }
     }
 }
