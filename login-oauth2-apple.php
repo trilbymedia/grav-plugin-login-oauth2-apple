@@ -13,6 +13,8 @@ use RocketTheme\Toolbox\Event\Event;
  */
 class LoginOAuth2ApplePlugin extends Plugin
 {
+    protected $provider_name = 'apple';
+
     /**
      * @return array
      *
@@ -43,7 +45,7 @@ class LoginOAuth2ApplePlugin extends Plugin
     {
         if (isset($this->grav['oauth2'])) {
             $options = $this->config->get('plugins.login-oauth2-apple');
-            $this->grav['oauth2']->addProvider('apple', $options);
+            $this->grav['oauth2']->addProvider($this->provider_name, $options);
         } else {
             $this->grav['messages']->add('oauth2-apple plugin requires oauth2 plugin but it appears to not be installed or enabled', 'error');
         }
@@ -100,19 +102,19 @@ class LoginOAuth2ApplePlugin extends Plugin
     {
         $state = $_POST['state'] ?? null;
         $code = $_POST['code'] ?? null;
+        
         if ($code && $state && Utils::startsWith($state, 'APPLE__')) {
             $oauth2 = $this->grav['oauth2'];
-            $provider_name = 'apple';
 
             /** @var AppleProvider $provider */
-            $provider = ProviderFactory::create($provider_name, $oauth2->getProviderOptions($provider_name));
+            $provider = ProviderFactory::create($this->provider_name, $oauth2->getProviderOptions($this->provider_name));
             $temp_data = $provider->getTempCookieData();
             $temp_state = $temp_data['state'] ?? null;
             $temp_redirect = $temp_data['redirect_after_login'] ?? null;
 
             if ($temp_state === $state) {
                 $session = $this->grav['session'];
-                $session->oauth2_provider = $provider_name;
+                $session->oauth2_provider = $this->provider_name;
                 $session->oauth2_state = $state;
                 $session->redirect_after_login = $temp_redirect;
             }
