@@ -11,7 +11,6 @@ class AppleProvider extends BaseProvider
 {
     protected $name = 'Apple';
     protected $classname = Apple::class;
-    protected $temp_cookie_name = 'siwa-temp-cookie';
 
     public function initProvider(array $options): void
     {
@@ -37,22 +36,14 @@ class AppleProvider extends BaseProvider
         $options['scope'] = $this->config->get('plugins.login-oauth2-apple.options.scope');
 
         // workaround for Apple's crappy OAuth2 implementation that uses a POST callback that doesn't forward lax-cookie
-        $this->setTempCookie();
+        $this->cookieFix();
 
         return $this->provider->getAuthorizationUrl($options);
     }
 
-    public function getState(): string
-    {
-        return 'APPLE__' . $this->state;
-    }
-
-
     public function getUserData(ResourceOwnerInterface $user): array
     {
         \assert($user instanceof AppleResourceOwner);
-
-        $full_name = trim($user->getFirstName() . " " . $user->getLastName());
 
         $data = [
             'id'         => $user->getId(),
@@ -60,6 +51,8 @@ class AppleProvider extends BaseProvider
             'email'      => $user->getEmail()
         ];
 
+        // Only update fullname if provided (Apple only sends this on first login)
+        $full_name = trim($user->getFirstName() . " " . $user->getLastName());
         if (!empty($full_name)) {
             $data['fullname'] = $full_name;
         }
@@ -67,37 +60,20 @@ class AppleProvider extends BaseProvider
         return $data;
     }
 
-    public static function getCallbackUri(string $admin = 'auto'): string
+    /**
+     * Fix for Grav's session cookie as secure + lax is not passed along with
+     * Apple's non-OAuth2 spec POST callback.  Only unsecure cookie is.
+     * This is returned to proper configuration when returning to the site.
+     * @return void
+     */
+    public function cookieFix(): void
     {
-        $callback_uri = parent::getCallbackUri($admin);
-        $callback_uri .= '?XDEBUG_SESSION_START=1';
-        return $callback_uri;
-    }
-
-    public function setTempCookie(): void
-    {
+        /** @var Session $session */
         $session = Grav::instance()['session'];
-
-        // Create short-lived cookie to get around Apple's crappy OAuth2 implementation
-        $temp_data = [
-            'state' => $session->oauth2_state,
-            'redirect_after_login' => $session->redirect_after_login, //testing only
-        ];
-
-        setcookie($this->temp_cookie_name, json_encode($temp_data), [
-            'expires' => time() + 1800,
-            'path' => '/',
-            'secure' => true,
-            'httponly' => true,
-            'samesite' => 'None',
-        ]);
+        $session->close();
+        $session->setOptions(['cookie_samesite' => '']);
+        $session->setOptions(['cookie_secure' => false]);
+        $session->start();
     }
 
-    public function getTempCookieData(): array
-    {
-        $temp_data = json_decode($_COOKIE[$this->temp_cookie_name] ?? [], true);
-        unset($_COOKIE[$this->temp_cookie_name]);
-        setcookie($this->temp_cookie_name, null, -1, '/');
-        return $temp_data;
-    }
 }
