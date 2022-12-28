@@ -36,7 +36,7 @@ class AppleProvider extends BaseProvider
         $options['scope'] = $this->config->get('plugins.login-oauth2-apple.options.scope');
 
         // workaround for Apple's crappy OAuth2 implementation that uses a POST callback that doesn't forward lax-cookie
-        $this->cookieFix();
+        $this->sessionCookieFix();
 
         return $this->provider->getAuthorizationUrl($options);
     }
@@ -66,7 +66,7 @@ class AppleProvider extends BaseProvider
      * This is returned to proper configuration when returning to the site.
      * @return void
      */
-    public function cookieFix(): void
+    public function sessionCookieFix(): void
     {
         /** @var Session $session */
         $session = Grav::instance()['session'];
