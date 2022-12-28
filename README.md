@@ -48,52 +48,44 @@ There is a good guide [here](https://developer.okta.com/blog/2019/06/04/what-the
 
 Below a quick summary of all the steps necessary:
 
-1. Log into developer.apple.com
-2. head to Account -> Certificates, IDs & Profiles
-3. Create a new Identifier:
-    1. Description: Grav OAuth 2
-    2. Bundle ID: org.getgrav.oauth2.djamil (explicit)
-    3. Check "Sign In with Apple" from the list
-    4. Configure and pick "Enable as a primary App ID"
-    5. Register
-4. Still in the Identifier tab. Switch to Services IDs from the top right dropdown
-    1. Register a Service ID
-    2. Select "Services IDs" radio
-    3. Add a description (ie, your site name)
-    4. Pick a an Identifier (this will be your Client ID, ie: org.getgrav.oauth2.djamil.client)
-    5. Enable Sign In With Apple
-    6. Click Configure
-        1. Add your domain site by following instructions for verification. You will be required to download a certificate to prove you are the owner of the site
-        2. Add the callback URL (ie, http://yourdomain/grav/task:callback.oauth2)
-5. Go under Keys on the sidebar
-6. Create a Key
-    1. Key Name: Grav OAuth 2
-    2. Select Sign in with Apple
-    3. Click on Configure on the far right and select the App ID previously created: org.getgrav.oauth2.djamil
-    4. Save and Register
-7. Follow the directions. Make sure you download the key and you place it under user/data/oauth2/apple/
-    1. Make sure you backup this key, you will not be able to download it again.
-    2. Do not rename the key, place it in the grav user/data location as is
+1. Log into https://developer.apple.com
+2. head to **Account** -> **Certificates, IDs & Profiles**
+3. From the **Identifiers** sidebar item, click the `+` button to **Register a new identifier**:
+    1. Select **App IDs** (if it's not already set), then **Continue**
+    1. Click **App** and **Continue**   
+    1. Add a **Description**: e.g. `Grav OAuth 2`
+    2. Set **Bundle ID**: e.g. `org.getgrav.oauth2` (Explicit)
+    3. Check **Sign In with Apple** from the list below
+    4. Configure and pick **Enable as a primary App ID** (if not already set)
+    4. Click **Continue** and then **Register**
+4. Still in the **Identifier** tab, switch to **Services IDs** from the top right dropdown
+    1. Click **Register a Service ID**
+    2. Select the **Services IDs** radio button (if not already set), then **Continue**
+    3. Add a **Description**: e.g.:`My Grav Site`
+    4. Pick an **Identifier**: this will be your Client ID, e.g.: `org.getgrav.oauth2.client`
+    4. Click **Continue** then **Register**
+    4. Open this Service ID again, then Enable **Sign In With Apple**
+    6. Click **Configure**
+        1. Add your domain site by following instructions for verification. You will be required to download a certificate to prove you are the owner of the site (e.g.: `yourdomain.com`)
+        2. Add the callback URL (ie, `http://yourdomain.com/task:callback.oauth2`)
+    7. Click **Continue** and then **Register**
+5. Click **Keys** in the main sidebar
+    1. Click the `+` button to **Create a Key**
+    1. Key Name: `Grav OAuth 2`
+    2. Select **Sign in with Apple**
+    3. Click on **Configure** on the far right and select the App ID previously created: `org.getgrav.oauth2`
+    4. Click **Continue** and then **Register**
+    5. Follow the directions. Make sure you **download the key** and place it under `user/data/oauth2/apple/`
+    1. NOTE: **Make sure you save this key**, you will not be able to download it again
+    2. NOTE: **Do not rename the key**, place it in the grav user/data location as-is
 
 
-## Known Issues
+## Fullname Support
 
-This is still a WIP and not fully working. I am unable to get this working in Chrome, works fine in Safari. I am also unable to switch AppleID as well as getting back the full name.
-
-Common error returned:
-
-```
-invalid_request
-No AppPlatform or Primary app for the web application
-```
-
-Not advised to be used in production yet.
+To be able to use the user's fullname, you **must** enable `save_grav_user` in the **Login OAauth2** plugin. This is because Apple only sends the username information when first logging in.  You will need to navigate to the users' [Apple account ](https://appleid.apple.com/account/manage/section/security) then click on **Sign in with Apple** and then click the **Stop using Sign in with Apple** button. This will force a 'first-time' login and will resend the full name when next logging in.
 
 ## Credits
 
 This plugin is made possible thanks to the oauth2-apple integration by [patrickbussmann/oauth2-apple](https://github.com/patrickbussmann/oauth2-apple)
 
-## To Do
-
-- [ ] Future plans, if any
 
