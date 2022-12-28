@@ -1,7 +1,7 @@
 name: Login OAuth2 Apple
 version: 1.0.0
 description: OAuth2 Provider for Apple
-icon: plug
+icon: apple
 author:
   name: Trilby Media
   email: hello@trilby.media

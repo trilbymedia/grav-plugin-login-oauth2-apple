@@ -1,11 +1,10 @@
 .form-oauth2 button.apple {
-    background: #fff;
-    border: 2px solid #000;
-    color: #000;
+    background: #000;
+    color: #fff;
 }
 .form-oauth2 button.apple:hover {
-    border-color: #323030;
+    background: #222;
 }
 .form-oauth2 button.apple svg {
-    fill: #000;
+    fill: #fff;
 }

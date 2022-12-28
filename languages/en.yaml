@@ -2,3 +2,4 @@ PLUGIN_LOGIN_OAUTH2_APPLE:
   TEAM_ID: "Team ID"
   keyFileId: "Key File ID"
   keyFilePath: "Key File Path"
+  BUTTON_APPLE: "Sign in with Apple"
