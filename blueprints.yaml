@@ -1,18 +1,17 @@
 name: Login OAuth2 Apple
 version: 1.0.0
-description: OAuth2 Provider for Apple
+description: OAuth2 Provider for "Sign in with Apple"
 icon: apple
 author:
   name: Trilby Media
   email: hello@trilby.media
-homepage: https://github.com/trilbymedia/grav-plugin-login-o-auth2-apple
-demo: http://demo.yoursite.com
-keywords: grav, plugin, etc
-bugs: https://github.com/trilbymedia/grav-plugin-login-o-auth2-apple/issues
-docs: https://github.com/trilbymedia/grav-plugin-login-o-auth2-apple/blob/develop/README.md
+homepage: https://github.com/trilbymedia/grav-plugin-login-oauth2-apple
+keywords: grav, plugin, apple, login
+bugs: https://github.com/trilbymedia/grav-plugin-login-oauth2-apple/issues
+docs: https://github.com/trilbymedia/grav-plugin-login-oauth2-apple/blob/develop/README.md
 license: MIT
 dependencies:
-  - { name: login-oauth2, version: '~1.0' }
+  - { name: login-oauth2, version: '>=2.2.0' }
 
 form:
   validation: strict
