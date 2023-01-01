@@ -42,10 +42,7 @@ class LoginOAuth2ApplePlugin extends Plugin
         if (isset($this->grav['oauth2'])) {
             $options = $this->config->get('plugins.login-oauth2-apple');
             $this->grav['oauth2']->addProvider($this->provider_name, $options);
-        } else {
-            $this->grav['messages']->add('oauth2-apple plugin requires oauth2 plugin but it appears to not be installed or enabled', 'error');
         }
-
     }
 
     /**
