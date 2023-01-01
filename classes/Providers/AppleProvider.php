@@ -60,6 +60,13 @@ class AppleProvider extends BaseProvider
         return $data;
     }
 
+//    public static function getCallbackUri(string $admin = 'auto'): string
+//    {
+//        $callback_uri = parent::getCallbackUri($admin);
+//        $callback_uri .= '?XDEBUG_SESSION_START=1';
+//        return $callback_uri;
+//    }
+
     /**
      * Fix for Grav's session cookie as secure + lax is not passed along with
      * Apple's non-OAuth2 spec POST callback.  Only unsecure cookie is.
