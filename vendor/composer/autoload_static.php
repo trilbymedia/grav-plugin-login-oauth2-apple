@@ -7,14 +7,6 @@ namespace Composer\Autoload;
 class ComposerStaticInite4acdb67ae7c99e59555b6034d189098
 {
     public static $prefixLengthsPsr4 = array (
-        'S' => 
-        array (
-            'StellaMaris\\Clock\\' => 18,
-        ),
-        'P' => 
-        array (
-            'Psr\\Clock\\' => 10,
-        ),
         'L' => 
         array (
             'League\\OAuth2\\Client\\' => 21,
@@ -32,14 +24,6 @@ class ComposerStaticInite4acdb67ae7c99e59555b6034d189098
     );
 
     public static $prefixDirsPsr4 = array (
-        'StellaMaris\\Clock\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/stella-maris/clock/src',
-        ),
-        'Psr\\Clock\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/clock/src',
-        ),
         'League\\OAuth2\\Client\\' => 
         array (
             0 => __DIR__ . '/..' . '/patrickbussmann/oauth2-apple/src',
