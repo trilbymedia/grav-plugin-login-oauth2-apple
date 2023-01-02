@@ -1,5 +1,6 @@
 {
     "require": {
+        "php": "^7.3.6 || ^8.0",
         "patrickbussmann/oauth2-apple": "^0.2"
     },
     "replace": {
