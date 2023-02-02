@@ -1,3 +1,9 @@
+# v1.0.3
+## 02/02/2023
+
+1. [](#bugfix)
+   * Revert to older style session cookie fix for reliability
+
 # v1.0.2
 ## 01/02/2023
 
