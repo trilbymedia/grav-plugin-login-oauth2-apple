@@ -11,6 +11,7 @@ class AppleProvider extends BaseProvider
 {
     protected $name = 'Apple';
     protected $classname = Apple::class;
+    protected $temp_cookie_name = 'siwa-temp-cookie';
 
     public function initProvider(array $options): void
     {
@@ -41,6 +42,12 @@ class AppleProvider extends BaseProvider
         return $this->provider->getAuthorizationUrl($options);
     }
 
+
+    public function getState(): string
+    {
+        return 'APPLE__' . $this->state;
+    }
+
     public function getUserData(ResourceOwnerInterface $user): array
     {
         \assert($user instanceof AppleResourceOwner);
@@ -60,6 +67,7 @@ class AppleProvider extends BaseProvider
         return $data;
     }
 
+    /** comment this out before releasing */
 //    public static function getCallbackUri(string $admin = 'auto'): string
 //    {
 //        $callback_uri = parent::getCallbackUri($admin);
@@ -77,10 +85,29 @@ class AppleProvider extends BaseProvider
     {
         /** @var Session $session */
         $session = Grav::instance()['session'];
-        $session->close();
-        $session->setOptions(['cookie_samesite' => '']);
-        $session->setOptions(['cookie_secure' => false]);
-        $session->start();
+        // Create short-lived cookie to get around Apple's crappy OAuth2 implementation
+        $temp_data = [
+           'state' => $session->oauth2_state,
+           'redirect_after_login' => $session->redirect_after_login, //testing only
+        ];
+
+        setcookie($this->temp_cookie_name, json_encode($temp_data), [
+           'expires' => time() + 1800,
+           'path' => '/',
+           'secure' => true,
+           'httponly' => true,
+           'samesite' => 'None',
+        ]);
+
     }
+
+    public function getTempCookieData(): array
+    {
+       $temp_data = json_decode($_COOKIE[$this->temp_cookie_name] ?? [], true);
+       unset($_COOKIE[$this->temp_cookie_name]);
+       setcookie($this->temp_cookie_name, null, -1, '/');
+       return $temp_data;
+    }
+
 
 }
