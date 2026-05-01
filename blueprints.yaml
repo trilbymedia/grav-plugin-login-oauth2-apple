@@ -1,5 +1,5 @@
 name: Login OAuth2 Apple
-version: 1.0.3
+version: 1.0.4
 description: OAuth2 Provider for "Sign in with Apple"
 icon: apple
 author:
@@ -10,6 +10,9 @@ keywords: grav, plugin, apple, login
 bugs: https://github.com/trilbymedia/grav-plugin-login-oauth2-apple/issues
 docs: https://github.com/trilbymedia/grav-plugin-login-oauth2-apple/blob/develop/README.md
 license: MIT
+compatibility:
+  grav: ['1.7', '2.0']
+
 dependencies:
   - { name: login-oauth2, version: '>=2.2.0' }
 
